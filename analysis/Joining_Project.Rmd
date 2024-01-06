@@ -1,5 +1,5 @@
 ---
-title: "Data-412 Project!"
+title: "Data-412 Project (GitHub)"
 author: "Miles Matthews"
 date: "2023-11-24"
 output: html_document
