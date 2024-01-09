@@ -11,8 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Executive summary: Joining Poverty and Water Quality Data Tables
 
-By Miles Matthews.
-
 For Data-412-005: Statistical Programming in R
 
 ## Chosen topic and functionality:
