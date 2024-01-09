@@ -9,17 +9,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Executive summary: Joining with Poverty and Water Quality Data Tables
+# Executive summary: Joining Poverty and Water Quality Data Tables
 
 By Miles Matthews.
 
 For Data-412-005: Statistical Programming in R
 
-## Chosen topic and functionality: 
+## Chosen topic and functionality:
 
-I have chosen to cover the concept of joins: r functions that can combine tables together, or filter them against each other, in various ways. Joins use keys - shared columns between tables - to match up observations in the tables. They then either create a new table with a combination of the values in the previous two tables (mutating joins), or remove rows from one of the tables depending on the rows present in the other table (filtering joins). Various joins each handle differences in the keys present in the tables in their own way.
+I have chosen to cover the concept of joins: R functions that can combine tables together, or filter them against each other, in various ways. Joins use keys - shared columns between tables - to match up observations in the tables. They then either create a new table with a combination of the values in the previous two tables (mutating joins), or remove rows from one of the tables depending on the rows present in the other table (filtering joins). Various joins each handle differences in the keys present in the tables in their own way.
 
-## Data sources: 
+## Data sources:
 
 I will be using two data sources that I will practice joining together. The first data source is a table containing information on poverty levels in different states and is from the United States Census Bureau. The second data source is a table containing information on water quality in various water systems, and is from the EPA.
 
@@ -95,15 +95,15 @@ knitr::include_graphics("../graphics/epa_image.png")
 
 ## Context and Significance:
 
-Sometimes, you may want to combine the information in two tables together. Perhaps one platform at your company has collected data on customers satisfaction ratings, while another tracks how much money those customers spend. You might want to compare the values in these tables to see if there appears to be a relationship between measures of customer satisfaction and how much money they spend. Joining the two tables - in this example, the table with customer satisfaction ratings and the table with customer spending rates - can allow you to more easily compare the data.
+Sometimes, you may want to combine the information in two tables together. Perhaps one platform at your company has collected data on customers' satisfaction ratings, while another tracks how much money those customers spend. You might want to compare the values in these tables to see if there appears to be a relationship between measures of customer satisfaction and how much money they spend. Joining the two tables - in this example, the table with customer satisfaction ratings and the table with customer spending rates - can allow you to more easily compare the data.
 
 ## Personal Motivation:
 
-I chose this topic because I was struggling to understand it on the homework assignment and did not feel I did a good job. I want to come back stronger and have a solid understanding of this topic, especially as I have heard it is a very important one in data science. Additionally, this is a skill that would have helped me a lot in some of my past volunteer work. I worked with google sheets databases for a volunteer organization in high school, and would spend around an hour each month manually entering information into a google sheet. While I didn't necessarily mind, I do remember thinking that there had to be a faster way to do it. Joining seems like the solution I wished I had, and so want to learn how to use it!
+I chose this topic because I was struggling to understand it on the homework assignment and did not feel I did a good job. I want to come back stronger and have a solid understanding of this topic, especially as I have heard it is a very important one in data science. Additionally, this is a skill that would have helped me a lot in some of my past volunteer work. I worked with Google Sheets databases for a volunteer organization in high school, and would spend around an hour each month manually entering information into a Google Sheet. While I didn't necessarily mind, I do remember thinking that there had to be a faster way to do it. Joining seems like the solution I wished I had, and so I want to learn how to use it!
 
 ## Primary objective:
 
-The primary objective of this lesson is to help the audience understand how joins work and how to use them to combine the information in tables as they desire. They hopefully will be able to identify primary and foreign keys, write code to apply joins, and predict the output of those joins.
+The primary objective of this lesson is to help the audience understand how joins work and how to use them to combine the information in tables as they desire. The audience hopefully will be able to identify primary and foreign keys, write code to apply joins, and predict the output of those joins.
 
 ## Key takeaways:
 
@@ -318,7 +318,7 @@ I am using two real world data sources in this lesson. One is SDWIS Federal Repo
 
     -   There was also data on poverty estimates and rates for children ages 0-4. However, this data was only available at the state level, and so all of the values for county were blank. Since I originally thought county was the foreign key for water systems, I didn't think it made sense to include this data and removed it from the table.
 
-#### Poverty levels (SAIPE State and County Estimates for 2021) (states only): 
+#### Poverty levels (SAIPE State and County Estimates for 2021) (states only):
 
 -   state_FIPS_code
 
@@ -402,7 +402,7 @@ I am using two real world data sources in this lesson. One is SDWIS Federal Repo
 
 # Data Preparation
 
-## Description of process: 
+## Description of process:
 
 I am interested in the environment and environmental justice, and so I thought it would be interesting to practice joining data from the US Census and the EPA. At first I found census tables for each state, and water quality data in which you could look up an individual water system. However I wanted to compare them at a national level so I did some digging on the sites until I was able to find national level data. The data tables were provided as excel sheets by the websites. Originally I imported them using readxl, but I read back through the readr notes and noticed that that is not recommended, and we are supposed to convert the excel files to csv files instead and read them in using readr. So I converted the datasets to csv files and read them in. In both the water and poverty datasets, there were a few lines with comments that were messing up the variables, so I added the skip argument to exclude them. In the poverty dataset, NA values were given ".", so I had to use the na argument in read_csv to replace the periods with NA. In both the water system dataset and the poverty dataset, the variable names had spaces in them, so I renamed the variable names using colnames. The poverty dataset had 31 different columns, so I wanted to remove some of them to make it easier to work with. At first I chose to rename the ones I knew I would use and leave the rest as NA. Then I wanted to get rid of the NA columns altogether because having duplicate column names was confusing R. First, I tried using the subset function to make a new table that only contains the variables I want to include. However, R gave me an error message because the column names were missing since I hadn't wanted to type them in due to there being about 30 extra columns I didn't intent to use. So, I tried dropping by index instead. An additional note: I later decided I wanted to go back and use more of the columns, so I renamed the ones I wasn't using to ci1, ci2, etc. (ci standing for confidence interval), and then dropped them. I renamed them this time so that the column names would be assigned to the right columns and not to the columns I wanted to drop.
 
@@ -410,7 +410,7 @@ Additionally, I unfortunately realized that county names are not a primary key f
 
 It was a long process to figure out what data tables to use and how to modify them to have the keys I needed, but I learned a lot of technical skills through the process, and also a valuable lesson of never assuming that a variable that *seems* like a primary key is in fact a primary key. I've learned that instead it is extremely important to immedatly use count(primary key) and filter(n \>1) to make sure that there are no duplicate values, instead of waiting until later to check this. This has also taught me valuable lesson about the importance of double checking you assumptions about data, and following best practices on doing so, in general.
 
-## Code and explanations: 
+## Code and explanations:
 
 I will load the tidyverse library to access a wide variety of helpful functions, including functions for reading in and tidying datasets.
 
@@ -663,7 +663,7 @@ R no longer places an error message in the console! So, we can use postal code t
 knitr::include_graphics("../graphics/left_join_success.png")
 ```
 
-#### Importance of confirming a key is primary: 
+#### Importance of confirming a key is primary:
 
 When I originally set up this project, I assumed that county was a primary key for poverty data. This turned out not to be the case, and I could have saved myself a lot of trouble if I had double checked as is recommended! Hopefully this section has shown you the importance of going through the double checking process for primary keys, and broader importance of double checking assumptions you have about your data.
 
@@ -901,7 +901,7 @@ Now the row from poverty data with the US postal code is the only row in the new
 
 The primary objective of this lesson is to help the audience understand how joins work and how to use them to combine the information in different tables as they desire. They hopefully will be able to identify primary and foreign keys, write code to apply joins, and predict the output of those joins. This can help you when you want to analyze data from multiple tables and sources.
 
-## Key points/main takeaways: 
+## Key points/main takeaways:
 
 -   Keys are used to tell R how to match rows together, which rows to keep, and how to organize information
 
